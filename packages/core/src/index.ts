@@ -77,6 +77,7 @@ export {
   TransactionTimeoutError,
   WalletNotInstalledError,
   FaucetRateLimitError,
+  InvalidSignatureError,
   RPCValidationMismatchError,
   DeviceLockedError,
   UserRejectedError,
