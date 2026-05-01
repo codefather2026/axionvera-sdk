@@ -54,6 +54,7 @@ export type { BumpTransactionFeeOptions } from './utils/transactionBuilder';
 export { getDefaultRpcUrl, getNetworkPassphrase, resolveNetworkConfig } from './utils/networkConfig';
 export { generateTransactionURI, generatePayURI } from './utils/sep7';
 export { decodeXdrBase64, clearXdrCache, getXdrCacheSize } from './utils/xdrCache';
+export { getRequiredSigners } from './utils/getRequiredSigners';
 export { parseEvents, decodeSorobanSymbol } from './utils/soroban';
 export type { ParsedEvent, ParseEventsOptions, DecodedTopic } from './utils/soroban';
 export {
