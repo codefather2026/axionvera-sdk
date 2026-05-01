@@ -43,8 +43,8 @@ export class CloudWatchLogger {
 
       if (this.config.accessKeyId && this.config.secretAccessKey) {
         clientConfig.credentials = {
-          accessKeyId: this.config.accessKeyId,
-          secretAccessKey: this.config.secretAccessKey,
+          accessKeyId: this.config.accessKeyId!,
+          secretAccessKey: this.config.secretAccessKey!,
         };
       }
 

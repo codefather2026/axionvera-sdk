@@ -94,6 +94,8 @@ export class Vault {
     return {
       totalAssets: BigInt(totalAssets.toString()),
       totalSupply: BigInt(totalSupply.toString()),
+      apy: Number(apy) / 10000,
+      lockPeriod: Number(lockPeriod),
       apy: apy.toNumber() / 10000,
       lockPeriod: lockPeriod.toNumber(),
     };
@@ -117,6 +119,8 @@ export class Vault {
    * ```
    */
   async getBalance(userAddress: string): Promise<bigint> {
+    const balance = await this.contract.balanceOf(userAddress);
+    return BigInt(balance.toString());
     const result = await this.contract.balanceOf(userAddress);
     return BigInt(result.toString());
   }
@@ -220,6 +224,8 @@ export class Vault {
 
     try {
       const contractWithSigner = this.contract.connect(signerToUse);
+      const depositFunc = this.contract.getFunction('deposit');
+      const tx = await depositFunc(params.amount, {
       const tx = await (contractWithSigner as any).deposit(params.amount, {
         value: params.amount,
       });
@@ -266,6 +272,8 @@ export class Vault {
 
     try {
       const contractWithSigner = this.contract.connect(signerToUse);
+      const withdrawFunc = this.contract.getFunction('withdraw');
+      const tx = await withdrawFunc(
       const tx = await (contractWithSigner as any).withdraw(
         params.amount,
         await signerToUse.getAddress(),
@@ -309,6 +317,8 @@ export class Vault {
 
     try {
       const contractWithSigner = this.contract.connect(signerToUse);
+      const claimRewardsFunc = this.contract.getFunction('claimRewards');
+      const tx = await claimRewardsFunc();
       const tx = await (contractWithSigner as any).claimRewards();
 
       return tx;
@@ -335,6 +345,8 @@ export class Vault {
    * ```
    */
   async getPendingRewards(userAddress: string): Promise<bigint> {
+    const rewards = await this.contract.pendingRewards(userAddress);
+    return BigInt(rewards.toString());
     const result = await this.contract.pendingRewards(userAddress);
     return BigInt(result.toString());
   }
@@ -357,6 +369,9 @@ export class Vault {
    * ```
    */
   async estimateDepositGas(amount: bigint): Promise<bigint> {
+    const depositFunc = this.contract.getFunction('deposit');
+    const gas = await depositFunc.estimateGas(amount);
+    return BigInt(gas.toString());
     const result = await (this.contract.estimateGas as any).deposit(amount);
     return BigInt(result.toString());
   }
@@ -379,6 +394,9 @@ export class Vault {
    * ```
    */
   async estimateWithdrawGas(amount: bigint): Promise<bigint> {
+    const withdrawFunc = this.contract.getFunction('withdraw');
+    const gas = await withdrawFunc.estimateGas(amount);
+    return BigInt(gas.toString());
     const result = await (this.contract.estimateGas as any).withdraw(amount);
     return BigInt(result.toString());
   }
